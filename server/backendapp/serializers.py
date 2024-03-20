@@ -2,9 +2,14 @@ from .models import *
 from rest_framework import serializers
 
 class CustomerSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(
+        queryset = User.objects.all(),
+        many=False
+    )
+    
     class Meta:
         model = Customer
-        fields = ['id', 'first_name', 'last_name', 'telephone', 'email', 'email_verified', 'notification_opted_in', 'created', 'created_by', 'updated', 'updated_by']
+        fields = ['id', 'user', 'first_name', 'last_name', 'telephone', 'email', 'email_verified', 'notification_opted_in', 'created', 'created_by', 'updated', 'updated_by']
 
 class PackageSerializer(serializers.ModelSerializer):
     customer = serializers.PrimaryKeyRelatedField(
