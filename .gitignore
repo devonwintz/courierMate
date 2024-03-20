@@ -31,6 +31,7 @@ __pycache__/
 .cache/
 .cache/
 .ccls-cache/
+*_cache
 
 # Environment Files
 .env
@@ -58,3 +59,5 @@ __pycache__/
 *.sqlite3
 *.db-journal
 *.pyc
+.coverage
+htmlcov/
