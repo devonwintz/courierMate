@@ -22,6 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('customers/', views.CustomerList.as_view(), name='customer-list'),
     path('customers/<int:id>/', views.CustomerDetail.as_view(), name='customer-detail'),
+    path('invoices/', views.InvoiceList.as_view(), name='invoice-list'),
+    path('invoices/<int:id>/', views.InvoiceDetail.as_view(), name='invoice-detail'),
     path('packages/', views.PackageList.as_view(), name='package-list'),
     path('packages/<int:id>/', views.PackageDetail.as_view(), name='package-detail'),
     path('package-categories/', views.PackageCategoryList.as_view(), name='package-category-list'),

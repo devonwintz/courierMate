@@ -33,3 +33,16 @@ class PackageStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = PackageStatus
         fields = ['id', 'name', 'created', 'created_by', 'updated', 'updated_by']
+
+class InvoiceSerializer(serializers.ModelSerializer):
+    customer = serializers.PrimaryKeyRelatedField(
+        queryset = Customer.objects.all(),
+        many=False
+    )
+    package = serializers.PrimaryKeyRelatedField(
+        queryset = Package.objects.all(),
+        many=False
+    )
+    class Meta:
+        model = Invoice
+        fields = ['id', 'customer', 'package', 'price', 'created', 'created_by', 'updated', 'updated_by']

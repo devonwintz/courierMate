@@ -1,0 +1,60 @@
+# Node.js / React
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python / Pipenv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+
+# Virtual Environment
+venv/
+env/
+.venv/
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+*.log.*
+*.log-*
+*.log?*
+
+# Cache
+__pycache__/
+.cache/
+.cache/
+.ccls-cache/
+
+# Environment Files
+.env
+.env.local
+.env.*.local
+.env.test
+.env.production
+.env.local
+
+# Ignore Django migration files
+**/migrations/*.py
+**/migrations/*.pyc
+
+# Miscellaneous
+*.bak
+.DS_Store
+*.sublime-workspace
+*.sublime-project
+*.vscode/
+.sass-cache/
+*.swp
+*.swo
+*.swn
+*.db
+*.sqlite3
+*.db-journal
+*.pyc
