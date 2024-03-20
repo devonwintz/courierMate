@@ -51,3 +51,32 @@ class InvoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invoice
         fields = ['id', 'invoice_no', 'customer', 'package', 'price', 'created', 'created_by', 'updated', 'updated_by']
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'email', 'password', 'is_staff', 'is_active', 'created', 'created_by', 'updated', 'updated_by']
+        extra_kwargs = {
+            'password': {'write_only': True, 'required': False}
+        }
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        instance = self.Meta.model(**validated_data)
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+        return instance
+
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)
+
+        password = validated_data.get('password')
+        if password is not None:
+            instance.set_password(password)
+
+        instance.updated_by = validated_data.get('updated_by', instance.updated_by)
+        instance.save()
+        return instance
