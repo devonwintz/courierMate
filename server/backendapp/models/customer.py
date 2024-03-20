@@ -6,7 +6,7 @@ class Customer(models.Model):
     first_name = models.CharField(max_length=255, null=False)
     last_name = models.CharField(max_length=255, null=False)
     telephone = models.CharField(max_length=10, null=False)
-    email = models.CharField(max_length=255, unique=True, null=True)
+    email = models.EmailField(max_length=255, unique=True, null=True)
     email_verified = models.BooleanField(default=False, null=False)
     notification_opted_in = models.BooleanField(default=False, null=False)
     created = models.DateTimeField(auto_now_add=True, null=False)
