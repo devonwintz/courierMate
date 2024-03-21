@@ -1,5 +1,4 @@
 from django.test import TestCase
-from backendapp.models import Customer
 from backendapp.tests.factories import CustomerFactory
 
 class CustomerTest(TestCase):
