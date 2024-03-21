@@ -15,6 +15,7 @@ pytest-cov = "*"
 uuid = "*"
 factory-boy = "*"
 faker = "*"
+exceptiongroup = "*"
 
 [dev-packages]
 
