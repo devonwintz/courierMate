@@ -1,7 +1,7 @@
 from django.test import TestCase
 from backendapp.tests.factories import PackageStatusFactory
 
-class PackageStatusTest(TestCase):
+class PackageStatusModelTest(TestCase):
     def test_string_representation(self):
         package_status = PackageStatusFactory()
         expected_str = str(package_status.name)
