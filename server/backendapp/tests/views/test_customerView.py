@@ -20,11 +20,6 @@ class CustomerViewTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.json()['data']), len(self.initial_customers))
 
-    def test_customer_list_GET(self):
-        response = self.client.get(reverse('customer-list'))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.json()['data']), len(self.initial_customers))
-
     def test_customer_list_POST_success(self):
         data = {
             'user': self.user.id,
