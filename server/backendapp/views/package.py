@@ -42,7 +42,7 @@ class PackageDetail(APIView):
                 'error': 'Package not found'
             }, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = PackageSerializer(customer)
+        serializer = PackageSerializer(package)
         return Response({
             'status': 'success',
             'data': serializer.data,
