@@ -1,10 +1,8 @@
 from django.test import TestCase, Client
 from backendapp.tests.factories import CustomerFactory, UserFactory
 from backendapp.models import Customer
-from backendapp.serializers import CustomerSerializer
 from django.urls import reverse
 from rest_framework import status
-from factory.faker import Faker
 
 class CustomerViewTest(TestCase):
     def setUp(self):

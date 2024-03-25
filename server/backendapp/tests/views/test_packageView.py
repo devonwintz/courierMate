@@ -1,10 +1,8 @@
 from django.test import TestCase, Client
 from backendapp.tests.factories import PackageFactory, CustomerFactory, PackageCategoryFactory, PackageStatusFactory
 from backendapp.models import Package
-from backendapp.serializers import PackageSerializer
 from django.urls import reverse
 from rest_framework import status
-from factory.faker import Faker
 
 class PackageViewTest(TestCase):
     def setUp(self):
