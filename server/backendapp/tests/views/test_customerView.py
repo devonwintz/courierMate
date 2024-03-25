@@ -13,7 +13,7 @@ class CustomerViewTest(TestCase):
         self.initial_customers = CustomerFactory.create_batch(5)
 
     def _get_customer_detail_url(self, customer_id):
-            return reverse('customer-detail', kwargs={'id': customer_id})
+        return reverse('customer-detail', kwargs={'id': customer_id})
 
     def test_customer_list_GET(self):
         response = self.client.get(reverse('customer-list'))
