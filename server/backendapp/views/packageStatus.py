@@ -77,7 +77,7 @@ class PackageStatusDetail(APIView):
     def delete(self, request, id):
         try:
             package_status = PackageStatus.objects.get(pk=id)
-        except Customer.DoesNotExist:
+        except PackageStatus.DoesNotExist:
             return Response({
                 'status': 'error',
                 'data': None,
