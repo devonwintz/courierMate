@@ -16,7 +16,7 @@ class PackageCategoryList(APIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = PackageCategoryList(data=request.data)
+        serializer = PackageCategorySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({
