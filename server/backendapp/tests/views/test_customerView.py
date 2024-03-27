@@ -146,7 +146,7 @@ class CustomerViewTest(TestCase):
         response = self.client.put(self._get_customer_detail_url(invalid_customer_id), data={}, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_customer_detail_DELETE_success(self):
+    def test_customer_detail_DELETE_success_status(self):
         response = self.client.delete(self._get_customer_detail_url(self.initial_customers[0].id))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
