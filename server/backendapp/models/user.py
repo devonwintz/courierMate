@@ -27,7 +27,10 @@ class User(AbstractUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-
+    created = models.DateTimeField(auto_now_add=True, null=False)
+    created_by = models.CharField(max_length=255, null=False, default='Admin')
+    updated = models.DateTimeField(auto_now=True, null=False)
+    updated_by = models.CharField(max_length=255, null=False, default='Admin')
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
