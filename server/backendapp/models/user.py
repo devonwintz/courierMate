@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, first_name, last_name, email, password=None, **extra_fields):
@@ -20,7 +20,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
         return self.create_user(first_name, last_name, email, password, **extra_fields)
 
-class User(AbstractUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255, null=False)
     last_name = models.CharField(max_length=255, null=False)
     email = models.EmailField(max_length=255, unique=True, null=True)
@@ -31,6 +31,7 @@ class User(AbstractUser, PermissionsMixin):
     created_by = models.CharField(max_length=255, null=False, default='Admin')
     updated = models.DateTimeField(auto_now=True, null=False)
     updated_by = models.CharField(max_length=255, null=False, default='Admin')
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
