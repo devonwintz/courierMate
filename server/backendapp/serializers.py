@@ -6,7 +6,7 @@ class CustomerSerializer(serializers.ModelSerializer):
         queryset = User.objects.all(),
         many=False
     )
-    
+
     class Meta:
         model = Customer
         fields = ['id', 'user', 'first_name', 'last_name', 'telephone', 'email', 'email_verified', 'notification_opted_in', 'created', 'created_by', 'updated', 'updated_by']
@@ -55,7 +55,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'first_name', 'last_name', 'email', 'password', 'is_staff', 'is_active', 'created', 'created_by', 'updated', 'updated_by']
+        fields = ['id', 'first_name', 'last_name', 'email', 'password', 'is_staff', 'is_superuser', 'is_active', 'created', 'created_by', 'updated', 'updated_by']
         extra_kwargs = {
             'password': {'write_only': True, 'required': False}
         }
