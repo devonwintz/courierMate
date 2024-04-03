@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, first_name, last_name, email, password=None, **extra_fields):
+        if not password:
+            raise ValueError("Password is required when creating a user.")
+
         email = self.normalize_email(email)
         user = self.model(email=email, first_name=first_name, last_name=last_name, **extra_fields)
         user.set_password(password)
