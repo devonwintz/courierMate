@@ -1,4 +1,4 @@
-from ..serializers import CustomerSerializer
+from ..serializers import CreateCustomerSerializer, UpdateCustomerSerializer
 from ..models import Customer
 from rest_framework import status
 from rest_framework.views import APIView
@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 class CustomerList(APIView):
     def get(self, request):
         customers = Customer.objects.all()
-        serializer = CustomerSerializer(customers, many=True)
+        serializer = CreateCustomerSerializer(customers, many=True)
         return Response({
             'status': 'success',
             'data': serializer.data,
@@ -16,7 +16,7 @@ class CustomerList(APIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = CustomerSerializer(data=request.data)
+        serializer = CreateCustomerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({
@@ -42,7 +42,7 @@ class CustomerDetail(APIView):
                 'error': 'Customer not found'
             }, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = CustomerSerializer(customer)
+        serializer = CreateCustomerSerializer(customer)
         return Response({
             'status': 'success',
             'data': serializer.data,
@@ -59,7 +59,7 @@ class CustomerDetail(APIView):
                 'error': 'Customer not found'
             }, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = CustomerSerializer(customer, data=request.data)
+        serializer = UpdateCustomerSerializer(customer, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({

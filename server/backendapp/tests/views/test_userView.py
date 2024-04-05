@@ -112,12 +112,6 @@ class UserViewTest(TestCase):
         updated_user = User.objects.get(pk=self.user.id)
         self.assertEqual(updated_user.email, updated_email)
 
-    def test_user_detail_PUT_incomplete_data_error(self):
-        incomplete_data = {
-        }
-        response = self.client.put(self._get_user_detail_url(self.user.id), data=incomplete_data, content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
     def test_user_detail_PUT_not_found_error(self):
         invalid_user_id = 9999
         response = self.client.put(self._get_user_detail_url(invalid_user_id), data={}, content_type='application/json')

@@ -133,14 +133,6 @@ class CustomerViewTest(TestCase):
         updated_customer = Customer.objects.get(pk=self.initial_customers[0].id)
         self.assertEqual(updated_customer.email, updated_email)
 
-    def test_customer_detail_PUT_incomplete_data_error(self):
-        incomplete_data = {
-            'first_name': 'John',
-            'last_name': 'Doe'
-        }
-        response = self.client.put(self._get_customer_detail_url(self.initial_customers[0].id), data=incomplete_data, content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
     def test_customer_detail_PUT_not_found_error(self):
         invalid_customer_id = 9999
         response = self.client.put(self._get_customer_detail_url(invalid_customer_id), data={}, content_type='application/json')

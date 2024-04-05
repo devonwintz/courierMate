@@ -1,4 +1,4 @@
-from ..serializers import InvoiceSerializer
+from ..serializers import CreateInvoiceSerializer, UpdateInvoiceSerializer
 from ..models import Invoice
 from rest_framework import status
 from rest_framework.views import APIView
@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 class InvoiceList(APIView):
     def get(self, request):
         invoices = Invoice.objects.all()
-        serializer = InvoiceSerializer(invoices, many=True)
+        serializer = CreateInvoiceSerializer(invoices, many=True)
         return Response({
             'status': 'success',
             'data': serializer.data,
@@ -16,7 +16,7 @@ class InvoiceList(APIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = InvoiceSerializer(data=request.data)
+        serializer = CreateInvoiceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({
@@ -42,7 +42,7 @@ class InvoiceDetail(APIView):
                 'error': 'Invoice not found'
             }, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = InvoiceSerializer(invoice)
+        serializer = CreateInvoiceSerializer(invoice)
         return Response({
             'status': 'success',
             'data': serializer.data,
@@ -59,7 +59,7 @@ class InvoiceDetail(APIView):
                 'error': 'Invoice not found'
             }, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = InvoiceSerializer(invoice, data=request.data)
+        serializer = UpdateInvoiceSerializer(invoice, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({

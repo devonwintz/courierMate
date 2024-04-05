@@ -101,6 +101,7 @@ class PackageViewTest(TestCase):
         self.assertEqual(updated_package.tracking_number, updated_tracking_number)
 
     def test_package_detail_PUT_incomplete_data_errors(self):
+        # Missing customer field
         incomplete_data = {
             'tracking_number': '0123456789',
             'category': self.package_category.id,

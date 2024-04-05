@@ -1,4 +1,4 @@
-from ..serializers import PackageSerializer
+from ..serializers import CreatePackageSerializer, UpdatePackageSerializer
 from ..models import Package
 from rest_framework import status
 from rest_framework.views import APIView
@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 class PackageList(APIView):
     def get(self, request):
         packages = Package.objects.all()
-        serializer = PackageSerializer(packages, many=True)
+        serializer = CreatePackageSerializer(packages, many=True)
         return Response({
             'status': 'success',
             'data': serializer.data,
@@ -16,7 +16,7 @@ class PackageList(APIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = PackageSerializer(data=request.data)
+        serializer = CreatePackageSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({
@@ -42,7 +42,7 @@ class PackageDetail(APIView):
                 'error': 'Package not found'
             }, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = PackageSerializer(package)
+        serializer = CreatePackageSerializer(package)
         return Response({
             'status': 'success',
             'data': serializer.data,
@@ -59,7 +59,7 @@ class PackageDetail(APIView):
                 'error': 'Package not found'
             }, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = PackageSerializer(package, data=request.data)
+        serializer = UpdatePackageSerializer(package, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({

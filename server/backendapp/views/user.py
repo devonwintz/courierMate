@@ -1,4 +1,4 @@
-from ..serializers import UserSerializer
+from ..serializers import CreateUserSerializer, UpdateUserSerializer
 from ..models import User
 from rest_framework import status
 from rest_framework.views import APIView
@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 class UserList(APIView):
     def get(self, request):
         users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
+        serializer = CreateUserSerializer(users, many=True)
         return Response({
             'status': 'success',
             'data': serializer.data,
@@ -16,7 +16,7 @@ class UserList(APIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        serializer = CreateUserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({
@@ -42,7 +42,7 @@ class UserDetail(APIView):
                 'error': 'User not found'
             }, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = UserSerializer(user)
+        serializer = CreateUserSerializer(user)
         return Response({
             'status': 'success',
             'data': serializer.data,
@@ -59,7 +59,7 @@ class UserDetail(APIView):
                 'error': 'User not found'
             }, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = UserSerializer(user, data=request.data)
+        serializer = UpdateUserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({

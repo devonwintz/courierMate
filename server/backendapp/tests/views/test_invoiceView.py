@@ -85,14 +85,6 @@ class InvoiceViewTest(TestCase):
         updated_invoice = Invoice.objects.get(pk=self.initial_invoices[0].id)
         self.assertEqual(updated_invoice.price, updated_price)
 
-    def test_invoice_detail_PUT_incomplete_data_error(self):
-        incomplete_data = {
-            'package': self.package.id,
-            'price': 20.00
-        }
-        response = self.client.put(self._get_invoice_detail_url(self.initial_invoices[0].id), data=incomplete_data, content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
     def test_invoice_detail_PUT_not_found_error(self):
         invalid_invoice_id = 999
         response = self.client.put(self._get_invoice_detail_url(invalid_invoice_id), data={}, content_type='application/json')
