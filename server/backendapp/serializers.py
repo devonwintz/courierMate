@@ -51,14 +51,15 @@ class CreatePackageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Package
-        fields = ['id', 'customer', 'tracking_number', 'category', 'date_delivered', 'date_shipped', 'expected_delivery_date', 'status', 'weight', 'length', 'width', 'height', 'created', 'created_by', 'updated', 'updated_by']
+        fields = ['id', 'customer', 'tracking_number', 'category', 'date_delivered_ny', 'date_arrived_gy', 'date_shipped', 'expected_delivery_date', 'status', 'weight', 'length', 'width', 'height', 'created', 'created_by', 'updated', 'updated_by']
 
         extra_kwargs = {
             'customer': {'required': True},
             'tracking_number': {'required': True},
             'category': {'required': True},
             'status': {'required': True},
-            'date_delivered': {'required': False},
+            'date_delivered_ny': {'required': True},
+            'date_arrived_gy': {'required': False},
             'date_shipped': {'required': False},
             'expected_delivery_date': {'required': False},
             'weight': {'required': False},
@@ -83,14 +84,15 @@ class UpdatePackageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Package
-        fields = ['id', 'customer', 'tracking_number', 'category', 'date_delivered', 'date_shipped', 'expected_delivery_date', 'status', 'weight', 'length', 'width', 'height', 'created', 'created_by', 'updated', 'updated_by']
+        fields = ['id', 'customer', 'tracking_number', 'category', 'date_delivered_ny', 'date_arrived_gy', 'date_shipped', 'expected_delivery_date', 'status', 'weight', 'length', 'width', 'height', 'created', 'created_by', 'updated', 'updated_by']
 
         extra_kwargs = {
             'customer': {'required': False},
             'tracking_number': {'required': False},
             'category': {'required': False},
             'status': {'required': False},
-            'date_delivered': {'required': False},
+            'date_delivered_ny': {'required': False},
+            'date_arrived_gy': {'required': False},
             'date_shipped': {'required': False},
             'expected_delivery_date': {'required': False},
             'weight': {'required': False},

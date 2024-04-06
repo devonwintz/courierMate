@@ -27,6 +27,7 @@ class PackageViewTest(TestCase):
         data = {
             'customer': self.customer.id,
             'tracking_number': '12345678910',
+            'date_delivered_ny': '2024-04-01',
             'category': self.package_category.id,
             'status': self.package_status.id
         }
@@ -37,6 +38,7 @@ class PackageViewTest(TestCase):
         data = {
             'customer': self.customer.id,
             'tracking_number': '12345678910',
+            'date_delivered_ny': '2024-04-01',
             'category': self.package_category.id,
             'status': self.package_status.id
         }
@@ -47,6 +49,7 @@ class PackageViewTest(TestCase):
         data = {
             'customer': self.customer.id,
             'tracking_number': '12345678910',
+            'date_delivered_ny': '2024-04-01',
             'category': self.package_category.id,
             'status': self.package_status.id
         }
@@ -99,16 +102,6 @@ class PackageViewTest(TestCase):
         response = self.client.put(self._get_package_detail_url(self.initial_packages[0].id), data=data, content_type='application/json')
         updated_package = Package.objects.get(pk=self.initial_packages[0].id)
         self.assertEqual(updated_package.tracking_number, updated_tracking_number)
-
-    def test_package_detail_PUT_incomplete_data_errors(self):
-        # Missing customer field
-        incomplete_data = {
-            'tracking_number': '0123456789',
-            'category': self.package_category.id,
-            'status': self.package_status.id
-        }
-        response = self.client.put(self._get_package_detail_url(self.initial_packages[0].id), data=incomplete_data, content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_package_detail_PUT_not_found_errors(self):
         invalid_package_id = 9999

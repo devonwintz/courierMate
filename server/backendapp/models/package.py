@@ -5,9 +5,10 @@ from .packageStatus import PackageStatus
 
 class Package(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    tracking_number = models.CharField(max_length=255, null=True)
+    tracking_number = models.CharField(max_length=255, null=False)
     category=  models.ForeignKey(PackageCategory, on_delete=models.CASCADE)
-    date_delivered = models.DateField(null=True)
+    date_delivered_ny = models.DateField(null=False, verbose_name="Date Delivered in NY")
+    date_arrived_gy = models.DateField(null=True, verbose_name="Date of Arrival in Guyana")
     date_shipped = models.DateField(null=True)
     expected_delivery_date = models.DateField(null=True)
     status = models.ForeignKey(PackageStatus, on_delete=models.CASCADE)
@@ -20,7 +21,7 @@ class Package(models.Model):
     updated = models.DateTimeField(auto_now=True, null=False)
     updated_by = models.CharField(max_length=255, null=False, default='Admin')
 
-    def __str__(self): 
+    def __str__(self):
         return self.tracking_number
 
     class Meta:
