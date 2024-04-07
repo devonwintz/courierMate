@@ -16,6 +16,7 @@ uuid = "*"
 factory-boy = "*"
 faker = "*"
 exceptiongroup = "*"
+mysqlclient = "==2.0.0"
 
 [dev-packages]
 
