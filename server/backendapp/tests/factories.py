@@ -19,7 +19,7 @@ class CustomerFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
     first_name = Faker("first_name")
     last_name = Faker("last_name")
-    telephone = Faker('phone_number')
+    telephone = Faker('numerify', text='##########')
     email = Faker('email')
 
 class PackageCategoryFactory(factory.django.DjangoModelFactory):
