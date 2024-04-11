@@ -3,6 +3,7 @@ from backendapp.tests.factories import CustomerFactory, UserFactory
 from backendapp.models import Customer
 from django.urls import reverse
 from rest_framework import status
+from unittest.mock import patch
 
 class CustomerViewTest(TestCase):
     def setUp(self):
@@ -20,6 +21,14 @@ class CustomerViewTest(TestCase):
     def test_customer_list_GET_count(self):
         response = self.client.get(reverse('customer-list'))
         self.assertEqual(len(response.json()['data']), len(self.initial_customers))
+
+    def test_customer_list_GET_exception_handling(self):
+        with patch('backendapp.models.Customer.objects.all') as mock_get_customers:
+            mock_get_customers.side_effect = Exception("Test Exception")
+            response = self.client.get(reverse('customer-list'))
+            self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+            self.assertEqual(response.data['status'], 'error')
+            self.assertEqual(response.data['error'], 'Failed to retrieve customers')
 
     def test_customer_list_POST_success_status(self):
         data = {
@@ -61,7 +70,7 @@ class CustomerViewTest(TestCase):
         new_customer = Customer.objects.last()
         self.assertEqual(new_customer.email, 'jdoe@example.com')
 
-    def test_customer_list_POST_invalid_user_error(self):
+    def test_customer_list_POST_bad_request_error(self):
         invalid_user_id = 999
         data = {
             'user': invalid_user_id,
@@ -92,6 +101,23 @@ class CustomerViewTest(TestCase):
         error_message = response.json().get('error', {}).get('email', [])[0]
         self.assertIn("email already exists.", error_message)
 
+    def test_customer_list_POST_exception_handling(self):
+        with patch('backendapp.serializers.CreateCustomerSerializer.save') as mock_save:
+            mock_save.side_effect = Exception("Test Exception")
+            data = {
+                    'user': self.user.id,
+                    'first_name': 'Jane',
+                    'last_name': 'Doe',
+                    'telephone': '5921234567',
+                    'email': 'jdoe@example.com',
+                    'email_verified': True,
+                    'notification_opted_in': True
+                }
+            response = self.client.post(reverse('customer-list'), data=data, content_type='application/json')
+            self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+            self.assertEqual(response.data['status'], 'error')
+            self.assertEqual(response.data['error'], 'Failed to create customer')
+
     def test_customer_detail_GET_success_status(self):
         response = self.client.get(self._get_customer_detail_url(self.initial_customers[0].id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -103,6 +129,14 @@ class CustomerViewTest(TestCase):
     def test_customer_detail_GET_error_message(self):
         response = self.client.get(self._get_customer_detail_url(9999))
         self.assertEqual(response.json().get('error'), 'Customer not found')
+
+    def test_customer_detail_GET_exception_handling(self):
+        with patch('backendapp.models.Customer.objects.get') as mock_get_customer:
+            mock_get_customer.side_effect = Exception("Test Exception")
+            response = self.client.get(self._get_customer_detail_url(self.initial_customers[0].id))
+            self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+            self.assertEqual(response.data['status'], 'error')
+            self.assertEqual(response.data['error'], 'Failed to retrieve customer details')
 
     def test_customer_detail_PUT_success_status(self):
         updated_email = 'jane@example.com'
@@ -138,6 +172,32 @@ class CustomerViewTest(TestCase):
         response = self.client.put(self._get_customer_detail_url(invalid_customer_id), data={}, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_customer_detail_PUT_bad_request_error(self):
+        invalid_updated_email = 'example.com'
+        data = {
+            'email': invalid_updated_email
+        }
+        response = self.client.put(self._get_customer_detail_url(self.initial_customers[0].id), data=data, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_customer_detail_PUT_exception_handling(self):
+        updated_email = 'jane@example.com'
+        data = {
+            'user': self.user.id,
+            'first_name': 'Jane',
+            'last_name': 'Doe',
+            'telephone': '5921234567',
+            'email': updated_email,
+            'email_verified': True,
+            'notification_opted_in': True
+        }
+        with patch('backendapp.serializers.UpdateCustomerSerializer.save') as mock_save:
+            mock_save.side_effect = Exception("Test Exception")
+            response = self.client.put(self._get_customer_detail_url(self.initial_customers[0].id), data=data, content_type='application/json')
+            self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+            self.assertEqual(response.data['status'], 'error')
+            self.assertEqual(response.data['error'], 'Failed to update customer details')
+
     def test_customer_detail_DELETE_success_status(self):
         response = self.client.delete(self._get_customer_detail_url(self.initial_customers[0].id))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -146,3 +206,10 @@ class CustomerViewTest(TestCase):
         response = self.client.delete(self._get_customer_detail_url(9999))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_customer_detail_DELETE_exception_handling(self):
+        with patch('backendapp.models.Customer.delete') as mock_delete:
+            mock_delete.side_effect = Exception("Test Exception")
+            response = self.client.delete(self._get_customer_detail_url(self.initial_customers[0].id))
+            self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+            self.assertEqual(response.data['status'], 'error')
+            self.assertEqual(response.data['error'], 'Failed to delete customer')
