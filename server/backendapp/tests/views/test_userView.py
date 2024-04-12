@@ -3,6 +3,7 @@ from backendapp.tests.factories import UserFactory
 from backendapp.models import User
 from django.urls import reverse
 from rest_framework import status
+from unittest.mock import patch
 
 class UserViewTest(TestCase):
     def setUp(self):
@@ -31,6 +32,14 @@ class UserViewTest(TestCase):
     def test_user_list_GET_count(self):
         response = self.client.get(reverse('user-list'))
         self.assertEqual(len(response.json()['data']), self.initial_users_count)
+
+    def test_user_list_GET_exception_handling(self):
+        with patch('backendapp.models.User.objects.all') as mock_get_users:
+            mock_get_users.side_effect = Exception("Test Exception")
+            response = self.client.get(reverse('user-list'))
+            self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+            self.assertEqual(response.data['status'], 'error')
+            self.assertEqual(response.data['error'], 'Failed to retrieve users')
 
     def test_user_list_POST_success_status(self):
         data = {
@@ -91,6 +100,14 @@ class UserViewTest(TestCase):
         response = self.client.get(self._get_user_detail_url(user_id))
         self.assertEqual(response.json().get('error'), 'User not found')
 
+    def test_user_detail_GET_exception_handling(self):
+        with patch('backendapp.models.User.objects.get') as mock_get_user:
+            mock_get_user.side_effect = Exception("Test Exception")
+            response = self.client.get(self._get_user_detail_url(self.user.id))
+            self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+            self.assertEqual(response.data['status'], 'error')
+            self.assertEqual(response.data['error'], 'Failed to retrieve user details')
+
     def test_user_detail_PUT_success_status(self):
         updated_email = 'johndoe@example.com'
         data = {
@@ -117,6 +134,24 @@ class UserViewTest(TestCase):
         response = self.client.put(self._get_user_detail_url(invalid_user_id), data={}, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_customer_detail_PUT_exception_handling(self):
+        updated_email = 'johndoe@example.com'
+        data = {
+            'user': self.user.id,
+            'first_name': 'Jane',
+            'last_name': 'Doe',
+            'telephone': '5921234567',
+            'email': updated_email,
+            'email_verified': True,
+            'notification_opted_in': True
+        }
+        with patch('backendapp.serializers.UpdateUserSerializer.save') as mock_save:
+            mock_save.side_effect = Exception("Test Exception")
+            response = self.client.put(self._get_user_detail_url(self.user.id), data=data, content_type='application/json')
+            self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+            self.assertEqual(response.data['status'], 'error')
+            self.assertEqual(response.data['error'], 'Failed to update user details')
+
     def test_user_detail_DELETE_success_status(self):
         response = self.client.delete(self._get_user_detail_url(self.user.id))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -125,4 +160,12 @@ class UserViewTest(TestCase):
         invalid_user_id = 9999
         response = self.client.delete(self._get_user_detail_url(invalid_user_id))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_user_detail_DELETE_exception_handling(self):
+        with patch('backendapp.models.User.delete') as mock_delete:
+            mock_delete.side_effect = Exception("Test Exception")
+            response = self.client.delete(self._get_user_detail_url(self.user.id))
+            self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+            self.assertEqual(response.data['status'], 'error')
+            self.assertEqual(response.data['error'], 'Failed to delete user')
 
