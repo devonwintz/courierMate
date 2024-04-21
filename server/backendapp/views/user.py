@@ -24,7 +24,7 @@ class UserList(APIView):
              return Response({
                 'status': 'error',
                 'data': None,
-                'error': 'Failed to retrieve users'
+                'error': 'Internal server error: Failed to retrieve users'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
@@ -39,13 +39,14 @@ class UserList(APIView):
                     'error': None
                 }, status=status.HTTP_201_CREATED)
             else:
+                logger.warning(f"Failed to create user: {serializer.errors}")
                 return Response({
                     'status': 'error',
                     'data': None,
                     'error': serializer.errors
                 }, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-             logger.exception("Failed to create user")
+             logger.exception("Internal server error: Failed to create user")
              return Response({
                 'status': 'error',
                 'data': None,
@@ -71,6 +72,7 @@ class UserDetail(APIView):
                 'error': 'User not found'
             }, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
+             logger.exception("Internal server error: Failed to retrieve user details")
              return Response({
                 'status': 'error',
                 'data': None,
@@ -104,7 +106,7 @@ class UserDetail(APIView):
                 'error': 'User not found'
             }, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-             logger.exception("Failed to update user details")
+             logger.exception("Internal server error: Failed to update user details")
              return Response({
                 'status': 'error',
                 'data': None,
@@ -129,7 +131,7 @@ class UserDetail(APIView):
                 'error': 'User not found'
             }, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-             logger.exception("Failed to delete user")
+             logger.exception("Internal server error: Failed to delete user")
              return Response({
                 'status': 'error',
                 'data': None,
