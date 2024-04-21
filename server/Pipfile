@@ -17,6 +17,7 @@ factory-boy = "*"
 faker = "*"
 exceptiongroup = "*"
 mysqlclient = "==2.0.0"
+python-json-logger = "*"
 
 [dev-packages]
 
