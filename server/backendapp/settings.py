@@ -141,7 +141,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'backendapp.User'
 
 # Set up logging configuration
-LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
+LOGGING_DIR = os.path.join(f'{BASE_DIR}/backendapp', 'logs')
 
 if not os.path.exists(LOGGING_DIR):
     os.makedirs(LOGGING_DIR)
