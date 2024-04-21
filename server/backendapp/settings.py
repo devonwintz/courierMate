@@ -146,36 +146,51 @@ LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
 if not os.path.exists(LOGGING_DIR):
     os.makedirs(LOGGING_DIR)
 
-LOG_FILE = os.path.join(LOGGING_DIR, 'debug.log')
+REQUEST_LOG_FILE = os.path.join(LOGGING_DIR, 'request.log')
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filemode': 'a',
-    'formatters': {
-            'standard': {
-                'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
-            },
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "%(asctime)s [%(levelname)s]: %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S"
         },
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': LOG_FILE,
-            'formatter': 'standard'
+        "verbose": {
+            "format": "%(asctime)s [%(levelname)s] File %(filename)s:%(lineno)s - %(funcName)s(): %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S"
         },
-         'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'standard'
-        },
+        "json": {
+            "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+            "format": "%(asctime)s %(levelname)s %(filename)s %(lineno)s %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S"
+        }
     },
-    'loggers': {
-        '': {
-            'level': 'DEBUG',
-            'handlers': ['file', 'console'],
-            'propagate': True,
+    "handlers": {
+        "file_standard": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "formatter": "standard",
+            "filename": REQUEST_LOG_FILE
         },
+        "file_verbose": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "formatter": "verbose",
+            "filename": REQUEST_LOG_FILE
+        },
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "standard"
+        }
+    },
+    "loggers": {
+        "backendapp_request": {
+            "handlers": ["file_verbose", "console"],
+            "level": "DEBUG",
+            "propagate": False
+        }
     },
 }
 
