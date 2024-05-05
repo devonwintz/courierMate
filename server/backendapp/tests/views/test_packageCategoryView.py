@@ -27,7 +27,7 @@ class PackageCategoryViewTest(TestCase):
             response = self.client.get(reverse('package-category-list'))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to retrieve package categories')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to retrieve package categories')
 
     def test_package_category_list_POST_success_status(self):
         data = {
@@ -65,7 +65,7 @@ class PackageCategoryViewTest(TestCase):
             response = self.client.post(reverse('package-category-list'), data=data, content_type='application/json')
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to create package category')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to create package category')
 
     def test_package_category_detail_GET_success_status(self):
         response = self.client.get(self._get_package_category_detail_url(self.initial_package_categories[0].id))
@@ -85,7 +85,7 @@ class PackageCategoryViewTest(TestCase):
             response = self.client.get(self._get_package_category_detail_url(self.initial_package_categories[0].id))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to retrieve package category details')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to retrieve package category details')
 
     def test_package_category_detail_PUT_success_status(self):
         updated_name = 'Health/Sports'
@@ -123,7 +123,7 @@ class PackageCategoryViewTest(TestCase):
             response = self.client.put(self._get_package_category_detail_url(self.initial_package_categories[0].id), data=data, content_type='application/json')
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to update package category details')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to update package category details')
 
     def test_package_category_detail_DELETE_success_status(self):
         response = self.client.delete(self._get_package_category_detail_url(self.initial_package_categories[0].id))
@@ -139,5 +139,5 @@ class PackageCategoryViewTest(TestCase):
             response = self.client.delete(self._get_package_category_detail_url(self.initial_package_categories[0].id))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to delete package category')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to delete package category')
 
