@@ -29,7 +29,7 @@ class InvoiceViewTest(TestCase):
             response = self.client.get(reverse('invoice-list'))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to retrieve invoices')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to retrieve invoices')
 
     def test_invoice_list_POST_success_status(self):
         data = {
@@ -49,7 +49,7 @@ class InvoiceViewTest(TestCase):
         response = self.client.post(reverse('invoice-list'), data=data, content_type='application/json')
         self.assertEqual(Invoice.objects.count(), len(self.initial_invoices) + 1)
 
-    def test_invoice_list_POST_error_status(self):
+    def test_invoice_list_POST_bad_request_error(self):
         invalid_customer_id = 999
         data = {
             'customer': invalid_customer_id,
@@ -70,7 +70,7 @@ class InvoiceViewTest(TestCase):
             response = self.client.post(reverse('invoice-list'), data=data, content_type='application/json')
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to create invoice')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to create invoice')
 
     def test_invoice_detail_GET_success_status(self):
         response = self.client.get(self._get_invoice_detail_url(self.initial_invoices[0].id))
@@ -92,7 +92,7 @@ class InvoiceViewTest(TestCase):
             response = self.client.get(self._get_invoice_detail_url(self.initial_invoices[0].id))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to retrieve invoice details')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to retrieve invoice details')
 
     def test_invoice_detail_PUT_success_status(self):
         updated_price = 40.00
@@ -140,7 +140,7 @@ class InvoiceViewTest(TestCase):
             response = self.client.put(self._get_invoice_detail_url(self.initial_invoices[0].id), data=data, content_type='application/json')
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to update invoice details')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to update invoice details')
 
     def test_invoice_detail_DELETE_success_status(self):
         response = self.client.delete(self._get_invoice_detail_url(self.initial_invoices[0].id))
@@ -157,5 +157,5 @@ class InvoiceViewTest(TestCase):
             response = self.client.delete(self._get_invoice_detail_url(self.initial_invoices[0].id))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to delete invoice')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to delete invoice')
 
