@@ -27,7 +27,7 @@ class PackageStatusViewTest(TestCase):
             response = self.client.get(reverse('package-status-list'))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to retrieve package statuses')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to retrieve package statuses')
 
     def test_package_status_list_POST_success_status(self):
         data = {
@@ -65,7 +65,7 @@ class PackageStatusViewTest(TestCase):
             response = self.client.post(reverse('package-status-list'), data=data, content_type='application/json')
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to create package status')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to create package status')
 
     def test_package_status_detail_GET_success_status(self):
         response = self.client.get(self._get_package_status_detail_url(self.initial_package_statuses[0].id))
@@ -87,7 +87,7 @@ class PackageStatusViewTest(TestCase):
             response = self.client.get(self._get_package_status_detail_url(self.initial_package_statuses[0].id))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to retrieve package status details')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to retrieve package status details')
 
 
     def test_package_status_detail_PUT_success_status(self):
@@ -127,7 +127,7 @@ class PackageStatusViewTest(TestCase):
             response = self.client.put(self._get_package_status_detail_url(self.initial_package_statuses[0].id), data=data, content_type='application/json')
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to update package status details')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to update package status details')
 
     def test_package_status_detail_DELETE_success_status(self):
         response = self.client.delete(self._get_package_status_detail_url(self.initial_package_statuses[0].id))
@@ -143,4 +143,4 @@ class PackageStatusViewTest(TestCase):
             response = self.client.delete(self._get_package_status_detail_url(self.initial_package_statuses[0].id))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to delete package status')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to delete package status')
