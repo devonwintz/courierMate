@@ -149,6 +149,14 @@ class UserViewTest(TestCase):
         response = self.client.put(self._get_user_detail_url(invalid_user_id), data={}, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_user_detail_PUT_bad_request_error(self):
+        invalid_updated_email = 'example.com'
+        data = {
+            'email': invalid_updated_email
+        }
+        response = self.client.put(self._get_user_detail_url(self.user.id), data=data, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_customer_detail_PUT_exception_handling(self):
         updated_email = 'johndoe@example.com'
         data = {
