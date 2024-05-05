@@ -39,7 +39,7 @@ class UserViewTest(TestCase):
             response = self.client.get(reverse('user-list'))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to retrieve users')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to retrieve users')
 
     def test_user_list_POST_success_status(self):
         data = {
@@ -86,6 +86,21 @@ class UserViewTest(TestCase):
         error_message = response.json().get('error', {}).get('email', [])[0]
         self.assertIn("email already exists.", error_message)
 
+    # def test_user_list_POST_exception_handling(self):
+    #     data = {
+    #         'first_name': 'Mark',
+    #         'last_name': 'Wayne',
+    #         'email': 'markwayne@example.com',
+    #         'password': 'drowssap321'
+    #     }
+
+    #     with patch('backendapp.models.User.objects.create_user') as mock_create_user:
+    #         mock_create_user.side_effect = Exception("Test Exception")
+    #         response = self.client.post(reverse('user-list'),  data=data, content_type='application/json')
+    #         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+    #         self.assertEqual(response.data['status'], 'error')
+    #         self.assertEqual(response.data['error'], 'Internal server error: Failed to create user')
+
     def test_user_detail_GET_success_status(self):
         response = self.client.get(self._get_user_detail_url(self.user.id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -106,7 +121,7 @@ class UserViewTest(TestCase):
             response = self.client.get(self._get_user_detail_url(self.user.id))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to retrieve user details')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to retrieve user details')
 
     def test_user_detail_PUT_success_status(self):
         updated_email = 'johndoe@example.com'
@@ -150,7 +165,7 @@ class UserViewTest(TestCase):
             response = self.client.put(self._get_user_detail_url(self.user.id), data=data, content_type='application/json')
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to update user details')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to update user details')
 
     def test_user_detail_DELETE_success_status(self):
         response = self.client.delete(self._get_user_detail_url(self.user.id))
@@ -167,5 +182,5 @@ class UserViewTest(TestCase):
             response = self.client.delete(self._get_user_detail_url(self.user.id))
             self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
             self.assertEqual(response.data['status'], 'error')
-            self.assertEqual(response.data['error'], 'Failed to delete user')
+            self.assertEqual(response.data['error'], 'Internal server error: Failed to delete user')
 
