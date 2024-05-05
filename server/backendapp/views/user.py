@@ -50,7 +50,7 @@ class UserList(APIView):
              return Response({
                 'status': 'error',
                 'data': None,
-                'error': 'Failed to create user'
+                'error': 'Internal server error: Failed to create user'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class UserDetail(APIView):
@@ -76,7 +76,7 @@ class UserDetail(APIView):
              return Response({
                 'status': 'error',
                 'data': None,
-                'error': 'Failed to retrieve user details'
+                'error': 'Internal server error: Failed to retrieve user details'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def put(self, request, id):
@@ -96,7 +96,7 @@ class UserDetail(APIView):
                 return Response({
                     'status': 'error',
                     'data': None,
-                    'error': serializer.errors
+                    'error': f"Failed to update user details: {serializer.errors}"
                 }, status=status.HTTP_400_BAD_REQUEST)
         except User.DoesNotExist:
             logger.warning(f"User with id '{id}' not found")
@@ -110,7 +110,7 @@ class UserDetail(APIView):
              return Response({
                 'status': 'error',
                 'data': None,
-                'error': 'Failed to update user details'
+                'error': 'Internal server error: Failed to update user details'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, id):
@@ -135,6 +135,6 @@ class UserDetail(APIView):
              return Response({
                 'status': 'error',
                 'data': None,
-                'error': 'Failed to delete user'
+                'error': 'Internal server error: Failed to delete user'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
