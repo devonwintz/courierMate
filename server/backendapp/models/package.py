@@ -4,7 +4,7 @@ from .packageCategory import PackageCategory
 from .packageStatus import PackageStatus
 
 class Package(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, db_index=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     tracking_number = models.CharField(max_length=255, null=False)
     category=  models.ForeignKey(PackageCategory, on_delete=models.CASCADE)
     date_delivered_ny = models.DateField(null=False, verbose_name="Date Delivered in NY")
