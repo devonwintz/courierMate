@@ -4,7 +4,7 @@ from .packageCategory import PackageCategory
 from .packageStatus import PackageStatus
 
 class Package(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, db_index=True)
     tracking_number = models.CharField(max_length=255, null=False)
     category=  models.ForeignKey(PackageCategory, on_delete=models.CASCADE)
     date_delivered_ny = models.DateField(null=False, verbose_name="Date Delivered in NY")
@@ -26,3 +26,6 @@ class Package(models.Model):
 
     class Meta:
         verbose_name_plural = "packages"
+        indexes = [
+            models.Index(fields=['tracking_number']),
+        ]

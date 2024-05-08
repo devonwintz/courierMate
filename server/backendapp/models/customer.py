@@ -2,7 +2,7 @@ from django.db import models
 from .user import User
 
 class Customer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
     first_name = models.CharField(max_length=255, null=False)
     last_name = models.CharField(max_length=255, null=False)
     telephone = models.CharField(max_length=10, null=False)
@@ -19,3 +19,6 @@ class Customer(models.Model):
 
     class Meta:
         verbose_name_plural = "customers"
+        indexes = [
+            models.Index(fields=['email']),
+        ]
